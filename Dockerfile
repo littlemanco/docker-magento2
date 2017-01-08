@@ -4,16 +4,19 @@ FROM quay.io/littlemanco/apache-php:7.0-rc2
 ADD app /var/www/html
 WORKDIR /var/www/html
 
-# Install Composer
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    php -r "if (hash_file('SHA384', 'composer-setup.php') === '55d6ead61b29c7bdee5cccfb50076874187bd9f21f65d8991d46ec5cc90518f447387fb9f76ebae1fbbacf329e583e30') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
-    php composer-setup.php \
-        --install-dir=/bin \
-        --filename=composer \
-    php -r "unlink('composer-setup.php');" && \
-    chmod +x /bin/composer && \
+RUN export WORK_DIR=$(pwd) && \
+    export SHA1_SUM_COMPOSER="14e4aa42727b621c86ae108bf46c7737a6527a18  composer.phar" && \
+    # Install Composer
+        ## Download composer
+        cd /tmp/ && \
+        curl -Os sha1sum composer.phar && \
+        ## Check validity of composer
+        echo "${SHA1_SUM_COMPOSER}" | sha1sum --check --quiet && \
+        ## Make composer executable
+        chmod +x composer.phar && \
+        mv composer.phar /bin/composer && \
     # Build & install application
-    /bin/composer install --no-dev  && \
-    chown -R www-data:www-data /var/www/html && \
+        /bin/composer install --no-dev  && \
+        chown -R www-data:www-data /var/www/html && \
     # Remove composer
-    rm /bin/composer
+        rm /tmp/composer
