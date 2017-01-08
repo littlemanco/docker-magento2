@@ -16,8 +16,9 @@ RUN export WORK_DIR=$(pwd) && \
         echo "${SHA1_SUM_COMPOSER}" | sha1sum --check --quiet && \
         ## Make composer executable
         chmod +x composer.phar && \
-        mv composer.phar "${BIN_PATH_COMPOSER}" && \
+        mv composer.phar "${BIN_PATH_COMPOSER}" 1>&2 && \
         cd "${WORK_DIR}" \
+        tree . && \
     # Build & install application
         "${BIN_PATH_COMPOSER}" install --no-dev  && \
         chown -R www-data:www-data /var/www/html && \
