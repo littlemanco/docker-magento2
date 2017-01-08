@@ -6,10 +6,11 @@ WORKDIR /var/www/html
 
 RUN export WORK_DIR=$(pwd) && \
     export SHA1_SUM_COMPOSER="14e4aa42727b621c86ae108bf46c7737a6527a18  composer.phar" && \
+    export VERSION_COMPOSER="1.3.1" && \
     # Install Composer
         ## Download composer
         cd /tmp/ && \
-        curl -Os sha1sum composer.phar && \
+        curl -Os "https://getcomposer.org/download/${VERSION_COMPOSER}/composer.phar" && \
         ## Check validity of composer
         echo "${SHA1_SUM_COMPOSER}" | sha1sum --check --quiet && \
         ## Make composer executable
