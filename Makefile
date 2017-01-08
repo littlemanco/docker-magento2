@@ -26,11 +26,11 @@ help: ## Show this menu
 	@grep -E '^[a-zA-Z_-%]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "    \033[32m%-30s\033[0m %s\n", $$1, $$2}'
 
 clean: ## Build the application
-	app/composer.json . && \
-	app/composer.lock . && \
+	mv app/composer.json . && \
+	mv app/composer.lock . && \
 	rm -rf app/* && \
-	mv app/composer.json && \
-	mv app/composer.lock
+	mv composer.json app/ && \
+	mv composer.lock app/
 
 application: ## Build the application
 	cd app && composer install \
