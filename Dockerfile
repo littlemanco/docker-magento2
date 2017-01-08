@@ -11,6 +11,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
         --install-dir=/usr/local/bin \
         --filename=composer \
     php -r "unlink('composer-setup.php');" && \
+    chmod +x /usr/local/bin/composer && \
     # Build & install application
     /usr/local/bin/composer install --no-dev  && \
     chown -R www-data:www-data /var/www/html && \
