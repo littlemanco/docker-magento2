@@ -16,6 +16,7 @@ RUN export WORK_DIR=$(pwd) && \
         ## Make composer executable
         chmod +x composer.phar && \
         mv composer.phar /bin/composer && \
+        cd "${WORK_DIR}" \
     # Build & install application
         /bin/composer install --no-dev  && \
         chown -R www-data:www-data /var/www/html && \
